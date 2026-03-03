@@ -5,6 +5,7 @@ from dotenv import load_dotenv, set_key
 
 caracteres_especiales= "!@#$%&/?¡*+-=_"
 tiene_mayus= False
+tiene_minus= False
 tiene_char_especial= False
 tiene_numero= False
 
@@ -20,6 +21,11 @@ edad= os.getenv('age')
 
 def validar_correo(correo):
         partes= correo.split("@")
+        if correo.find(" ") == True:
+            return False
+
+        if correo.startswith("@"):
+            return False
 
         if len(partes)!=2:
             return False
@@ -32,7 +38,12 @@ def validar_correo(correo):
         for parte in partes + dominio:
             if not parte:
                 return False
+
+        
         return True
+
+
+
 
 
 print("Cargando login, un momento...")
@@ -91,13 +102,16 @@ while True:
                             if char in caracteres_especiales:
                                 tiene_char_especial = True
 
+                            elif char.islower():
+                                tiene_minus= True
+
                             elif char.isupper():
                                 tiene_mayus= True
 
                             elif char.isdigit():
                                 tiene_numero = True
 
-                        if tiene_char_especial and tiene_mayus and tiene_numero:
+                        if tiene_char_especial and tiene_mayus and tiene_numero and tiene_minus:
                             
                             print("Registro de contraseña exitoso.")    
                             set_key(".env", "password", contrasena)
